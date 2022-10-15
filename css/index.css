@@ -1,0 +1,56 @@
+* {
+  font-family: "Roboto", sans-serif;
+}
+body {
+  background-color: #95a3b3;
+}
+
+#mapselector-container {
+  outline: 1px solid red;
+  text-align: center;
+}
+h1 {
+  font-weight: 700;
+}
+#board {
+  background-color: #ffffff;
+  display: table;
+  margin: 0 auto;
+  align-self: center;
+}
+table {
+  margin: 0 auto;
+  outline: 3px solid #4b4e6d;
+}
+tr {
+  height: 5rem;
+}
+td {
+  width: 5rem;
+  outline: 3px solid #222222;
+}
+
+td.tile {
+  text-align: center;
+}
+
+td.tile.black {
+  background-color: #222222;
+  font-size: x-large;
+  color: #ffffff;
+}
+
+td.tile.bulb,
+.illuminated {
+  background-color: #fdf5bf;
+  font-size: xxx-large;
+}
+
+td.tile.bulb {
+  content: 💡;
+}
+
+/* td.tile.bulb > div {
+  font-size: large;
+  content: 💡;
+} */

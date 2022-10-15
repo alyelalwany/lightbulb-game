@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/index.css" />
+    <title>Lightbulb game</title>
+  </head>
+  <body>
+    <button id="showgame">show game</button>
+    <div id="mapselector-container" hidden="true">
+      <h1>Lightbulb game</h1>
+      <button id="signup">Start game</button>
+      <button id="tutorial">Tutorial</button>
+      <button id="leaderboard">Leaderboard</button>
+      <div id="signup">
+        <form>
+          <label for="name">Name</label>
+          <input type="text" name="name" required pattern="[A-Za-z0-9]+" />
+          <select name="maps" id="maps">
+            <option value="map1">map1</option>
+            <option value="map2">map2</option>
+            <option value="map3">map3</option>
+            <option value="map4">map4</option>
+          </select>
+          <button>start game</button>
+        </form>
+      </div>
+      <div id="tutorial" hidden="true">
+        <p>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi ipsum
+          aliquam at in porro sit atque sint nisi! Molestiae deleniti atque
+          ipsum officiis numquam ab pariatur provident cumque illo eaque. Lorem
+          ipsum dolor sit amet consectetur adipisicing elit. Magni error saepe
+          explicabo illo labore aliquid a, amet dolorem quas porro, dolores
+          repellendus vitae inventore voluptatem consectetur aut doloremque
+          placeat dicta.
+        </p>
+      </div>
+      <div id="leaderboard" hidden="true"><ul></ul></div>
+    </div>
+    <div id="board" hidden="hidden">
+      <table></table>
+    </div>
+    <script type="module" src="../js/index.js"></script>
+  </body>
+</html>
