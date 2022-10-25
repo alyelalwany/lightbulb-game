@@ -8,41 +8,89 @@
     <title>Lightbulb game</title>
   </head>
   <body>
-    <button id="showgame">show game</button>
-    <div id="mapselector-container" hidden="true">
+    <div id="mapselector-container">
       <h1>Lightbulb game</h1>
-      <button id="signup">Start game</button>
-      <button id="tutorial">Tutorial</button>
-      <button id="leaderboard">Leaderboard</button>
+      <section id="selector-buttons">
+        <button id="signup">Sign up and play</button>
+        <button id="tutorial">Game rules</button>
+        <button id="leaderboard">Leaderboard</button>
+      </section>
       <div id="signup">
         <form>
           <label for="name">Name</label>
-          <input type="text" name="name" required pattern="[A-Za-z0-9]+" />
+          <input
+            type="text"
+            name="name"
+            title="player name"
+            required
+            pattern="[A-Za-z0-9]+"
+          />
           <select name="maps" id="maps">
             <option value="map1">map1</option>
             <option value="map2">map2</option>
             <option value="map3">map3</option>
-            <option value="map4">map4</option>
           </select>
-          <button>start game</button>
+          <button type="button">start game</button>
         </form>
       </div>
       <div id="tutorial" hidden="true">
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi ipsum
-          aliquam at in porro sit atque sint nisi! Molestiae deleniti atque
-          ipsum officiis numquam ab pariatur provident cumque illo eaque. Lorem
-          ipsum dolor sit amet consectetur adipisicing elit. Magni error saepe
-          explicabo illo labore aliquid a, amet dolorem quas porro, dolores
-          repellendus vitae inventore voluptatem consectetur aut doloremque
-          placeat dicta.
-        </p>
+        <ul>
+          <li>
+            The king's palace has rooms with square shaped floors that consist
+            of black and white tiles only.
+          </li>
+          <li>Light bulbs can only be placed above white tiles.</li>
+          <li>
+            The light from the light bulbs does not spread diagonally, only
+            straight along the given row and column.
+          </li>
+          <li>
+            The black tiles have objects placed on them, which block the
+            propagation of light.
+          </li>
+          <li>
+            Black cells can optionally contain an integer from 0 to 4. This
+            indicates how many adjacent (bottom, top, right, left) cells contain
+            light bulbs. If there is such a number, the puzzle must be solved
+            accordingly!
+          </li>
+          <li>Two light bulbs can NEVER illuminate each other!</li>
+          <li>
+            The goal of the game is to place the light bulbs so that all the
+            white tiles are illuminated.
+          </li>
+          <li>
+            The game is played by one player until he solves the puzzle, so
+            there is no need to manage multiple players at the same time or
+            divide into rounds.
+          </li>
+        </ul>
       </div>
-      <div id="leaderboard" hidden="true"><ul></ul></div>
+      <div id="leaderboard" hidden="true">
+        <ul></ul>
+      </div>
     </div>
-    <div id="board" hidden="hidden">
-      <table></table>
+
+    <div id="game-display">
+      <div id="game-status-display">
+        <span id="name-display">Player : test</span>
+        <span id="time"></span>
+      </div>
+      <div id="board" hidden>
+        <table></table>
+      </div>
+      <div id="game-end" hidden>
+        <span>Game won!</span>
+        <button>Restart game</button>
+      </div>
+      <div id="game-controls">
+        <button id="save">Save game</button>
+        <button id="fetch">Fetch game</button>
+        <button id="check-solution">Check solution</button>
+        <button id="load-map">Load map</button>
+      </div>
     </div>
+
     <script type="module" src="../js/index.js"></script>
   </body>
 </html>

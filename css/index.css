@@ -6,12 +6,26 @@ body {
 }
 
 #mapselector-container {
-  outline: 1px solid red;
   text-align: center;
 }
 h1 {
   font-weight: 700;
+  /* font-style: italic; */
 }
+section#selector-buttons button {
+  margin: 10px 10px;
+}
+div#tutorial ul {
+  background-color: #888cc26c;
+  border-radius: 15px;
+  outline: 3px solid white;
+  padding: 10px;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 #board {
   background-color: #ffffff;
   display: table;
@@ -27,30 +41,86 @@ tr {
 }
 td {
   width: 5rem;
-  outline: 3px solid #222222;
+  outline: 3px solid #535b64;
 }
 
 td.tile {
   text-align: center;
+  cursor: pointer;
 }
 
 td.tile.black {
   background-color: #222222;
   font-size: x-large;
   color: #ffffff;
+  cursor: auto;
 }
 
-td.tile.bulb,
-.illuminated {
+td.tile.illuminated,
+.bulb {
   background-color: #fdf5bf;
-  font-size: xxx-large;
 }
 
 td.tile.bulb {
+  font-size: xxx-large;
   content: 💡;
 }
 
-/* td.tile.bulb > div {
-  font-size: large;
-  content: 💡;
-} */
+td.tile.wrong {
+  background-color: #df5454;
+}
+
+td.tile.number-correct {
+  color: green;
+}
+td.tile.number-wrong {
+  color: red;
+}
+
+#game-end {
+  margin-top: 5ch;
+  flex-direction: column;
+  align-items: center;
+}
+
+#game-status-display {
+  margin-left: 2ch;
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  color: #222222;
+}
+
+#game-controls {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+#game-controls button {
+  margin: 5px 0px 5px 0px;
+}
+
+button,
+select {
+  background-color: #4b4e6d;
+  border: #ffffff;
+  border-radius: 10px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  height: 25px;
+}
+
+input:invalid {
+  border: red solid 2px;
+}
+label {
+  font-weight: 600;
+}
+input {
+  border-radius: 10px;
+}
+
+#game-status-display {
+  background-color: rgb(80, 58, 58);
+}

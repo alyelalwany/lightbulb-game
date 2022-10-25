@@ -2,13 +2,9 @@ import { delegate } from "../utils/EventFunctions.js";
 import "./SignupForm.js";
 import "./Leaderboard.js";
 
-const signupButton = document.querySelector("button#signup");
-const input = document.querySelector("input[name=name]");
 const mapselectorContainer = document.querySelector(
   "div#mapselector-container"
 );
-
-signupButton.addEventListener("click", function (event) {});
 
 function handleClick(event) {
   const targetElement = event.target;
@@ -22,4 +18,4 @@ function handleClick(event) {
   containerToReveal.hidden = false;
 }
 
-delegate(mapselectorContainer, "click", "div>button", handleClick);
+delegate(mapselectorContainer, "click", "div>section>button", handleClick);
