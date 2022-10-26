@@ -12,7 +12,7 @@
       <h1>Lightbulb game</h1>
       <section id="selector-buttons">
         <button id="signup">Sign up and play</button>
-        <button id="tutorial">Game rules</button>
+        <button id="tutorial">Game rules + usage tips</button>
         <button id="leaderboard">Leaderboard</button>
       </section>
       <div id="signup">
@@ -35,6 +35,7 @@
       </div>
       <div id="tutorial" hidden="true">
         <ul>
+          <strong>Game rules</strong>
           <li>
             The king's palace has rooms with square shaped floors that consist
             of black and white tiles only.
@@ -65,13 +66,26 @@
             divide into rounds.
           </li>
         </ul>
+        <ul>
+          <strong>Usage tips</strong>
+          <li>
+            You can always restart the level without saving your progress by
+            clicking on 'start game' again. Careful, since this will clear the
+            bulbs you've placed on the tile.
+          </li>
+          <li>
+            Your score for each map is the time you take to solve it properly.
+            (Check the <strong><i>game rules</i></strong> section above for more
+            details)
+          </li>
+        </ul>
       </div>
       <div id="leaderboard" hidden="true">
         <ul></ul>
       </div>
     </div>
 
-    <div id="game-display">
+    <div id="game-display" hidden="true">
       <div id="game-status-display">
         <span id="name-display">Player : test</span>
         <span id="time"></span>

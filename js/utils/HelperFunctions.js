@@ -32,14 +32,16 @@ function checkIfAllInCorrectPosition(board) {
 }
 
 let counter = 0;
+let timeOutId;
 export function startCounter(selector) {
   let element = window.document.querySelector(selector);
   element.innerHTML = `Time elapsed : ${counter} sec`;
   counter += 1;
-  setTimeout(startCounter, 1000, selector);
+  timeOutId = setTimeout(startCounter, 1000, selector);
 }
 
 export function resetCounter(selector) {
+  clearTimeout(timeOutId);
   counter = 0;
   let element = window.document.querySelector(selector);
   element.innerHTML = `Time elapsed : ${counter} sec`;

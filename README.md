@@ -20,8 +20,8 @@ Minimum requirements (must be completed, 8 pts)
 
 Basic tasks (12 pts)
 
-[ ] Map selector: at least three different maps can be selected and started correctly (1 pt) \
-[ ] Map selector: the player's name can be entered which is shown during the game and on the scoreboard (1 pt) \
+[x] Map selector: at least three different maps can be selected and started correctly (1 pt) \
+[x] Map selector: the player's name can be entered which is shown during the game and on the scoreboard (1 pt) \
 [x] Game board: the elapsed time is always shown and updated (1 pt) \
 [x] Game board: all illuminated tiles (including the tiles containing the light bulbs) \ get yellow background colour (1 pt) \
 [x] Game board: the propagation of light is animated, the yellow background colour spreads from the light source after it has been placed (1 pt) \

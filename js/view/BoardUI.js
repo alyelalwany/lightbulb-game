@@ -32,13 +32,7 @@ const generateClassForTile = (tile) => {
   }
   return str;
 };
-{
-  /* <td class="tile ${tile.getBulbIsInWrongPosition() ? "wrong" : ""} ${
-              tile.getHasBulb() ? "bulb" : ""
-            } ${tile.getIsBlack() ? "black" : ""} ${
-              tile.getIsIlluminated() ? "illuminated" : ""
-            }"> */
-}
+
 export function renderBoard(board, boardDiv) {
   boardDiv.innerHTML = `
     <table>
@@ -87,7 +81,7 @@ export function getTileFromTable(x, y, boardDiv) {
 }
 export function removeLight(board, currentTile, boardDiv) {
   let { x, y } = xyCoord(currentTile);
-  console.log(`Removing light from : ${x} , ${y}`);
+  // console.log(`Removing light from : ${x} , ${y}`);
   handleLightHorizontally(board, currentTile, false);
   handleLightVertically(board, currentTile, false);
   // renderBoard(board, boardDiv);
@@ -95,7 +89,7 @@ export function removeLight(board, currentTile, boardDiv) {
 
 export function spreadLight(board, currentTile, boardDiv) {
   let { x, y } = xyCoord(currentTile);
-  console.log(`Spreading light from : ${x} , ${y}`);
+  // console.log(`Spreading light from : ${x} , ${y}`);
   handleLightHorizontally(board, currentTile, true);
   handleLightVertically(board, currentTile, true);
   // renderBoard(board, boardDiv);
@@ -117,7 +111,7 @@ export function handleLightHorizontally(board, currentTile, illuminate) {
     currentColumn++;
   }
 
-  console.log(`Before going left : (${currentColumn},${y})`);
+  // console.log(`Before going left : (${currentColumn},${y})`);
   currentColumn = x - 1;
 
   //Move left
@@ -155,7 +149,7 @@ export function handleLightVertically(board, currentTile, illuminate) {
     tile.setIsIlluminated(illuminate);
     currentRow++;
   }
-  console.log(`Before going up : (${x},${currentRow}) `);
+  // console.log(`Before going up : (${x},${currentRow}) `);
   currentRow = y - 1;
 
   //Move up
@@ -171,5 +165,80 @@ export function handleLightVertically(board, currentTile, illuminate) {
     //   `current tile : (${x},${currentRow}) illuminated : ${tile.getIsIlluminated()}`
     // );
     currentRow--;
+  }
+}
+
+export function isCorrectNumberOfBulbsAroundTile(board) {
+  let blackTiles = [];
+  board.map((row) => {
+    row.map((cell) => {
+      if (cell.getIsBlack()) {
+        blackTiles.push(cell);
+      }
+    });
+  });
+  blackTiles = blackTiles.filter((cell) => cell.getNumber() !== -1);
+  blackTiles.map((tile) => {
+    tile.surroundingBulbs = 0;
+    tile.setTileStatus(TILE_STATUS.NEUTRAL);
+    countOfBulbsHorizontal(tile, board);
+    countOfBulbsVertical(tile, board);
+    console.log(tile.getCoords());
+    console.log(tile.surroundingBulbs);
+    if (tile.surroundingBulbs > tile.getNumber()) {
+      tile.setTileStatus(TILE_STATUS.TOO_MANY_BULBS);
+    } else if (tile.surroundingBulbs === tile.getNumber()) {
+      tile.setTileStatus(TILE_STATUS.CORRECT_NUMBER_OF_BULBS);
+    } else {
+      tile.setTileStatus(TILE_STATUS.NEUTRAL);
+    }
+  });
+}
+
+function countOfBulbsVertical(tile, board) {
+  let { x, y } = tile.getCoords();
+  let rowAbove = y - 1;
+  let rowBelow = y + 1;
+  if (rowAbove >= 0) {
+    let tileAbove = board[rowAbove][x];
+    if (tileAbove.getHasBulb()) {
+      ++tile.surroundingBulbs;
+    }
+  }
+  if (rowBelow < board.length) {
+    let tileBelow = board[rowBelow][x];
+    if (tileBelow.getHasBulb()) {
+      ++tile.surroundingBulbs;
+    }
+  }
+}
+
+function countOfBulbsHorizontal(tile, board) {
+  let { x, y } = tile.getCoords();
+  let columnBefore = x - 1;
+  let columnAfter = x + 1;
+  if (columnBefore >= 0) {
+    let tileAbove = board[y][columnBefore];
+    if (tileAbove.getHasBulb()) {
+      ++tile.surroundingBulbs;
+    }
+  }
+  if (columnAfter < board.length) {
+    let tileBelow = board[y][columnAfter];
+    if (tileBelow.getHasBulb()) {
+      ++tile.surroundingBulbs;
+    }
+  }
+}
+
+export function correctLight(board, boardDiv) {
+  for (let x = 0; x < board.length; x++) {
+    for (let y = 0; y < board[x].length; y++) {
+      if (board[x][y].getHasBulb()) {
+        console.log(`Found one with bulb ${JSON.stringify(board[x][y])}`);
+        const tileWithBulb = getTileFromTable(y, x, boardDiv);
+        spreadLight(board, tileWithBulb, boardDiv);
+      }
+    }
   }
 }
