@@ -16,7 +16,7 @@ section#selector-buttons button {
   margin: 10px 10px;
 }
 div#tutorial ul {
-  background-color: #888cc26c;
+  background-color: #d9d9d9;
   border-radius: 15px;
   outline: 3px solid white;
   padding: 10px;
@@ -102,7 +102,7 @@ td.tile.number-wrong {
 
 button,
 select {
-  background-color: #4b4e6d;
+  background-color: #284b63;
   border: #ffffff;
   border-radius: 10px;
   font-weight: 600;
@@ -123,4 +123,22 @@ input {
 
 #game-status-display {
   background-color: rgb(80, 58, 58);
+}
+
+div#leaderboard {
+}
+div#leaderboard h2 {
+  color: #222222;
+}
+div#leaderboard table {
+  margin: 0 auto;
+  /* outline: 3px solid #284b63; */
+}
+#leaderboard tr {
+  height: 5rem;
+}
+#leaderboard td {
+  background-color: #d9d9d9;
+  width: 20rem;
+  outline: 3px solid #284b63;
 }

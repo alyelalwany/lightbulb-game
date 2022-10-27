@@ -14,18 +14,33 @@ export const allBoardTilesUsed = (board) => {
 
 export const hasWon = (game) => {
   return (
-    checkIfAllInCorrectPosition(game.board) &&
-    checkIfPlayerFinishedPuzzle(game.board)
+    isAllInCorrectPosition(game.board) &&
+    isPlayerFinishedPuzzle(game.board) &&
+    isNumberedTilesHaveCorrectNumberOfBulbs(game.board)
   );
 };
 
-function checkIfPlayerFinishedPuzzle(board) {
+export function isNumberedTilesHaveCorrectNumberOfBulbs(board) {
+  let blackTilesWithNumbers = board
+    .map((row) =>
+      row.filter((tile) => tile.getIsBlack() && tile.getNumber() !== -1)
+    )
+    .filter((row) => row.length !== 0)
+    .flat();
+  console.log(blackTilesWithNumbers);
+  return blackTilesWithNumbers.every(
+    (tile) => tile.surroundingBulbs === tile.getNumber()
+  );
+}
+
+function isPlayerFinishedPuzzle(board) {
   let whiteTiles = board.map((row) => row.filter((tile) => !tile.getIsBlack()));
   return whiteTiles.every((row) =>
     row.every((tile) => tile.getIsIlluminated() || tile.getHasBulb())
   );
 }
-function checkIfAllInCorrectPosition(board) {
+
+function isAllInCorrectPosition(board) {
   return board.every((row) =>
     row.every((tile) => !tile.getBulbIsInWrongPosition())
   );
@@ -41,10 +56,14 @@ export function startCounter(selector) {
 }
 
 export function resetCounter(selector) {
-  clearTimeout(timeOutId);
+  stopCounter();
   counter = 0;
   let element = window.document.querySelector(selector);
   element.innerHTML = `Time elapsed : ${counter} sec`;
+}
+
+export function stopCounter() {
+  clearTimeout(timeOutId);
 }
 
 export function checkIfBulbsInCorrectPosition(board, boardDiv) {

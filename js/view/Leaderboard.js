@@ -1,15 +1,43 @@
-const leaderboard = document.querySelector("div#leaderboard");
-const listElement = leaderboard.querySelector("ul");
+const Leaderboard = document.querySelector("div#leaderboard");
 
-let listOfPlayers = Object.keys(localStorage);
+const keyFilter = (key) => {
+  return key !== "board" && key !== "current-player";
+};
 
-//Works
-// listOfPlayers.map((item) =>
-//   console.log(JSON.parse(localStorage.getItem(item)))
-// );
+export const updateData = () => {
+  const listOfPlayers = Object.keys(localStorage).filter((key) =>
+    keyFilter(key)
+  );
+  return listOfPlayers.map((name) => {
+    let mapDetails = JSON.parse(localStorage.getItem(name));
+    let returnData = {
+      name: name,
+      mapDetails: mapDetails,
+    };
+    console.log(returnData);
+    return returnData;
+  });
+};
 
-listElement.innerHTML = renderLeaderboardList(listOfPlayers);
-
-function renderLeaderboardList(list) {
-  return listOfPlayers.map((username) => `<li>${username}</li>`).join("");
-}
+export const renderLeaderboard = (list, div) => {
+  div.innerHTML = `
+  <h2>Leaderboard</h2>
+  <table>
+   ${list
+     .map((obj) => {
+       return `
+      <tr>
+      <td>${obj.name} </td> 
+     ${obj.mapDetails
+       .map(
+         (mapObj) =>
+           `<td>${Object.keys(mapObj)[0]} :${Object.values(mapObj)[0]}</td>`
+       )
+       .join("")}
+    </tr>
+    `;
+     })
+     .join("")}
+    </table>
+    `;
+};
