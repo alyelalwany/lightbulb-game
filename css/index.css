@@ -20,7 +20,8 @@ div#tutorial ul {
   border-radius: 15px;
   outline: 3px solid white;
   padding: 10px;
-  list-style-type: none;
+  /* list-style-type: none; */
+  list-style-position: inside;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -32,9 +33,10 @@ div#tutorial ul {
   margin: 0 auto;
   align-self: center;
 }
+
 table {
   margin: 0 auto;
-  outline: 3px solid #4b4e6d;
+  outline: 3px solid #284b63;
 }
 tr {
   height: 5rem;
@@ -104,11 +106,11 @@ button,
 select {
   background-color: #284b63;
   border: #ffffff;
-  border-radius: 10px;
+  border-radius: 5px;
   font-weight: 600;
   color: white;
   cursor: pointer;
-  height: 25px;
+  height: 30px;
 }
 
 input:invalid {
@@ -118,11 +120,16 @@ label {
   font-weight: 600;
 }
 input {
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 #game-status-display {
-  background-color: rgb(80, 58, 58);
+  background-color: #d9d9d9;
+  border: 2px solid #535b64;
+  border-radius: 5px;
+  margin: 20px;
+  padding: 5px;
+  max-width: 15rem;
 }
 
 div#leaderboard {
@@ -141,4 +148,38 @@ div#leaderboard table {
   background-color: #d9d9d9;
   width: 20rem;
   outline: 3px solid #284b63;
+}
+
+div#load-games {
+  /* outline: 1px solid red; */
+  display: flex;
+  justify-content: center;
+}
+div#load-games ul {
+  width: 10rem;
+  margin: 10px;
+  background-color: #d9d9d9;
+  border-radius: 15px;
+  outline: 3px solid white;
+  padding: 10px;
+  list-style-type: none;
+  /* list-style-position: inside; */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+div#load-games button {
+  margin: 5px 0px;
+  background-color: #284b63;
+  border: #ffffff;
+  border-radius: 5px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  height: 1.5rem;
+}
+
+.hidden {
+  display: none;
 }

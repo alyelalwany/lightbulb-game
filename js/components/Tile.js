@@ -28,9 +28,24 @@ export class Tile {
     // }
   }
 
-  static createTile(x, y, black, number) {
+  static createTile(
+    x,
+    y,
+    black,
+    number,
+    hasBulb,
+    isIlluminated,
+    wrongNumberOfBulbs,
+    wrongPositionForBulb,
+    tileStatus
+  ) {
     let tile = new Tile(x, y, black);
     tile.setNumber(number);
+    tile.#hasBulb = hasBulb;
+    tile.#isIlluminated = isIlluminated;
+    tile.#wrongNumberOfBulbs = wrongNumberOfBulbs;
+    tile.#wrongPositionForBulb = wrongPositionForBulb;
+    tile.#tileStatus = tileStatus;
     return tile;
   }
 

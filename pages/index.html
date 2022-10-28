@@ -14,8 +14,9 @@
         <button id="signup">Sign up and play</button>
         <button id="tutorial">Game rules + usage tips</button>
         <button id="leaderboard">Leaderboard</button>
+        <button id="load-games">Load saved games</button>
       </section>
-      <button id="tester">Test</button>
+      <button id="tester" hidden="true">Test</button>
       <div id="signup">
         <form>
           <label for="name">Name</label>
@@ -71,8 +72,8 @@
           <strong>Usage tips</strong>
           <li>
             You can always restart the level without saving your progress by
-            clicking on 'start game' again. Careful, since this will clear the
-            bulbs you've placed on the tile.
+            clicking on 'start game' again. Careful, since this will clear your
+            progress in the current puzzle
           </li>
           <li>
             Your score for each map is the time you take to solve it properly.
@@ -81,17 +82,18 @@
         </ul>
       </div>
       <div id="leaderboard" hidden="true">
-        <table></table>
+        <!-- <table></table> -->
       </div>
+      <div id="load-games" hidden="true"></div>
     </div>
 
-    <div id="game-display" hidden="true">
+    <div id="game-display">
       <div id="game-status-display">
-        <span id="name-display">Player : test</span>
+        <span id="name-display"><b>Game details</b></span>
         <span id="time"></span>
       </div>
       <div id="board" hidden>
-        <table></table>
+        <!-- <table></table> -->
       </div>
       <div id="game-end" hidden>
         <span>Game won!</span>
@@ -100,7 +102,6 @@
       <div id="game-controls">
         <button id="save">Save game</button>
         <button id="fetch">Fetch game</button>
-        <button id="load-map">Load map</button>
       </div>
     </div>
 

@@ -1,7 +1,7 @@
 const Leaderboard = document.querySelector("div#leaderboard");
 
 const keyFilter = (key) => {
-  return key !== "board" && key !== "current-player";
+  return key !== "board" && key !== "current-player" && key != "saved-games";
 };
 
 export const updateData = () => {
@@ -14,14 +14,14 @@ export const updateData = () => {
       name: name,
       mapDetails: mapDetails,
     };
-    console.log(returnData);
+    // console.log(returnData);
     return returnData;
   });
 };
 
 export const renderLeaderboard = (list, div) => {
   div.innerHTML = `
-  <h2>Leaderboard</h2>
+  <h2>Our veterans</h2>
   <table>
    ${list
      .map((obj) => {

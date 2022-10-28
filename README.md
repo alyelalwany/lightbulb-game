@@ -27,10 +27,10 @@ Basic tasks (12 pts)
 [x] Game board: the propagation of light is animated, the yellow background colour spreads from the light source after it has been placed (1 pt) \
 [x] Game board: show with a different style (e.g. green text colour) \ if a black tile is surrounded by the correct number of light bulbs (1 pt) \
 [x] Game board: show with a different style (e.g. red colour or icon) \ if two light bulbs illuminate each other (1 pt) \
-[ ] Game board: the game can be interrupted and saved (1 pt) \
-[ ] Map selector: the latest results can be seen - player's name, map name, time elapsed (1 pt) \
+[x] Game board: the game can be interrupted and saved (1 pt) \
+[x] Map selector: the latest results can be seen - player's name, map name, time elapsed (1 pt) \
 [x] Map selector: the latest results are stored persistently after the page is closed (1 pt) \
-[ ] Map selector: the saved game is shown and can be loaded properly (1 pt) \
+[x] Map selector: the saved game is shown and can be loaded properly (1 pt) \
 [x] Other: nice design (1 pt)
 
 Extra tasks (extra 5 pts)

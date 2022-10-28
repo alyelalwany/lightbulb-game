@@ -55,9 +55,9 @@ export function startCounter(selector) {
   timeOutId = setTimeout(startCounter, 1000, selector);
 }
 
-export function resetCounter(selector) {
-  stopCounter();
-  counter = 0;
+export function resetCounter(selector, number = 0) {
+  console.log(number);
+  counter = number;
   let element = window.document.querySelector(selector);
   element.innerHTML = `Time elapsed : ${counter} sec`;
 }

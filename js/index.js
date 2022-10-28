@@ -18,6 +18,7 @@ import {
   stopCounter,
 } from "./utils/HelperFunctions.js";
 import { renderLeaderboard, updateData } from "./view/Leaderboard.js";
+import { Tile } from "./components/Tile.js";
 
 //Elements
 const boardDiv = document.querySelector("div#board");
@@ -32,16 +33,18 @@ const gameDisplay = document.querySelector("#game-display");
 const startGameButton = document.querySelector("select+button");
 const testerButton = document.querySelector("button#tester");
 const leaderboard = document.querySelector("div#leaderboard");
+const loadGameEl = document.querySelector("div#load-games");
 
 let mapName = "map1";
+let playerName;
 let game;
 let timeElSelector = "span#time";
 let playersData = updateData();
+let savedGames;
 // game = new Game(mapName);
 // renderBoard(game.board, boardDiv);
 renderLeaderboard(playersData, leaderboard);
 startGameButton.addEventListener("click", function (event) {
-  resetCounter(timeElSelector);
   console.log(nameInputEl);
   if (!nameInputEl.checkValidity()) {
     nameInputEl.reportValidity();
@@ -49,23 +52,37 @@ startGameButton.addEventListener("click", function (event) {
       "Name must conform with pattern [A-Za-z0-9]+"
     );
   } else {
-    localStorage.setItem("current-player", nameInputEl.value);
-    document.querySelector(
-      "#name-display"
-    ).innerHTML = `Player : ${nameInputEl.value} <br> Map : ${selectMapEl.value}`;
-    gameDisplay.hidden = false;
     mapName = selectMapEl.value;
-    game = new Game(mapName);
-    startCounter(timeElSelector);
-    renderBoard(game.board, boardDiv);
-    gameEndDiv.style.display = "none";
+    playerName = nameInputEl.value;
+    startGame(mapName, playerName);
   }
 });
+
+function startGame(mapName, playerName, board, time) {
+  localStorage.setItem("current-player", playerName);
+  document.querySelector(
+    "#name-display"
+  ).innerHTML = `<b>Game details</b><br>Player : ${playerName} <br> Map : ${mapName}`;
+  gameDisplay.hidden = false;
+  game = new Game(mapName);
+  // console.log(board);
+  if (board) {
+    game.board = board;
+    document.querySelector(timeElSelector).innerHTML = time ? time : 0;
+    // console.log(game.board);
+  }
+  stopCounter();
+  resetCounter(timeElSelector, time);
+  startCounter(timeElSelector);
+  renderBoard(game.board, boardDiv);
+  gameEndDiv.style.display = "none";
+}
 
 restartGameButton.addEventListener("click", function (event) {
   game = new Game(mapName);
   renderBoard(game.board, boardDiv);
   resetCounter(timeElSelector);
+  startCounter(timeElSelector);
   gameEndDiv.style.display = "none";
 });
 
@@ -73,15 +90,139 @@ restartGameButton.addEventListener("click", function (event) {
 function handleGameControl(event) {
   const targetElement = event.target;
   if (targetElement.id === "save") {
-    localStorage.setItem("board", JSON.stringify(game.board));
+    savingGame();
   } else if (targetElement.id === "fetch") {
-    let string = localStorage.getItem("board");
-    console.log(string);
+    loadGameEl.style.display = "flex";
+    showSavedGames();
+    // loadGameEl.innerHTML = string;
+    // console.log(string);
   }
 }
+function handleLoadGameOnBoard(event) {
+  const targetElement = event.target;
+  const parentSection = targetElement.closest("ul");
+  const spanInParent = parentSection.querySelector("span");
+  const playerName = spanInParent.innerHTML;
+  const mapName = targetElement.innerHTML;
 
+  localStorage.setItem("current-player", playerName);
+  let entry = savedGames.find((entry) => entry.name === playerName);
+  let boardToLoad = entry.boards.find((entry) => entry.map === mapName);
+
+  let time = Number(boardToLoad.time);
+  boardToLoad = boardToLoad.boardInStore;
+  // console.log(boardToLoad);
+  let tempBoard = [];
+  boardToLoad.map((row, i) => {
+    let rowToInsert = [];
+    row.map((cell, j) => {
+      let tileToPush = Tile.createTile(
+        cell.x,
+        cell.y,
+        cell.black,
+        cell.number,
+        cell.hasBulb,
+        cell.isIlluminated,
+        cell.wrongNumberOfBulbs,
+        cell.wrongPositionForBulb,
+        cell.tileStatus
+      );
+      rowToInsert.push(tileToPush);
+    });
+    tempBoard.push(rowToInsert);
+  });
+  boardToLoad = tempBoard;
+  console.log(boardToLoad);
+  // game = new Game(mapName);
+  // game.board = boardToLoad.boardInStore;
+  // console.log(boardToLoad.boardInStore);
+  startGame(mapName, playerName, boardToLoad, time);
+  loadGameEl.style.display = "none";
+  // console.log(game.board);
+}
+
+function showSavedGames() {
+  savedGames = JSON.parse(localStorage.getItem("saved-games"));
+  // console.log(savedGames);
+  let string;
+  string = savedGames
+    .map((entry) => {
+      return `<ul>
+        <span>${entry.name}</span>
+        ${entry.boards
+          .map((item) => {
+            // console.log(item.map);
+            return `<button><li>${item.map}</li><li hidden="true">${item.boardInStore}</li></button>`;
+          })
+          .join("")}
+      </ul>`;
+    })
+    .join("");
+  // console.log(string);
+
+  loadGameEl.innerHTML = string;
+  delegate(loadGameEl, "click", "button li", handleLoadGameOnBoard);
+}
 delegate(gameControlDiv, "click", "button", handleGameControl);
 // console.log(game.altBoard);
+
+function savingGame() {
+  let currentPlayerName = localStorage.getItem("current-player");
+  let mapName = selectMapEl.value;
+  let currentTime = document.querySelector(timeElSelector).innerHTML;
+  currentTime = currentTime.split(":")[1];
+  currentTime = currentTime.split("sec")[0].trim();
+  console.log(currentTime);
+  let dataToStore = {
+    name: currentPlayerName,
+    boards: [
+      {
+        map: mapName,
+        boardInStore: game.board,
+        time: currentTime,
+      },
+    ],
+  };
+  let savedGames = localStorage.getItem("saved-games");
+  console.log(`${currentPlayerName} ${mapName}`);
+  if (savedGames) {
+    savedGames = JSON.parse(savedGames);
+    let playerExists = savedGames.find((entry) => {
+      console.log(entry.name);
+      return entry.name === currentPlayerName;
+    });
+    // console.log(playerExists);
+    if (playerExists) {
+      savedGames.map((item) => {
+        console.log(item.boards);
+        let boardExists = item.boards.find(
+          (boardInStore) => boardInStore.map === mapName
+        );
+        console.log(boardExists);
+        if (boardExists) {
+          item.boards.map((entry) => {
+            if (entry.map === mapName) {
+              entry.boardInStore = game.board;
+            }
+          });
+        } else {
+          let boardToAdd = {
+            map: mapName,
+            boardInStore: game.board,
+            time: currentTime,
+          };
+          item.boards.push(boardToAdd);
+        }
+      });
+    } else {
+      savedGames.push(dataToStore);
+    }
+    localStorage.setItem("saved-games", JSON.stringify(savedGames));
+  } else {
+    dataToStore = JSON.stringify([dataToStore]);
+    localStorage.setItem("saved-games", dataToStore);
+  }
+}
 
 function handleTileClick(event) {
   const tile = event.target;

@@ -14,7 +14,11 @@ function handleClick(event) {
   );
   let containersToHide = mapselectorContainer.querySelectorAll("div");
   containersToHide = Array.from(containersToHide);
-  containersToHide.forEach((item) => (item.hidden = true));
+  containersToHide.forEach((item) => {
+    item.hidden = true;
+    // item.classList.toggle("hidden");
+  });
+  // containerToReveal.classList.remove("hidden");
   containerToReveal.hidden = false;
 }
 

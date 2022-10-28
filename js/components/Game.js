@@ -1,5 +1,5 @@
 import { map1, map2, map3 } from "../../assets/maps/Maps.js";
-import { Tile } from "./Tile.js";
+import { Tile, TILE_STATUS } from "./Tile.js";
 export const GAME_STATE = {
   IN_GAME: 0,
   WON: 1,
@@ -25,7 +25,12 @@ export class Game {
           cell.x,
           cell.y,
           cell.black,
-          cell.number
+          cell.number,
+          false,
+          false,
+          false,
+          false,
+          TILE_STATUS.NEUTRAL
         );
         // console.log(tileToPush);
         rowToInsert.push(tileToPush);
