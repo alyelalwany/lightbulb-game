@@ -81,6 +81,7 @@ td.tile.number-wrong {
 
 #game-end {
   margin-top: 5ch;
+  /* display: flex; */
   flex-direction: column;
   align-items: center;
 }
@@ -182,4 +183,11 @@ div#load-games button {
 
 .hidden {
   display: none;
+}
+.flex {
+  display: flex;
+}
+
+.selected-tab {
+  border: 2.5px solid #d9d9d9;
 }

@@ -11,10 +11,10 @@
     <div id="mapselector-container">
       <h1>Lightbulb game</h1>
       <section id="selector-buttons">
-        <button id="signup">Sign up and play</button>
+        <button id="signup" class="selected-tab">Sign up and play</button>
         <button id="tutorial">Game rules + usage tips</button>
         <button id="leaderboard">Leaderboard</button>
-        <button id="load-games">Load saved games</button>
+        <button id="load-games">Saved games</button>
       </section>
       <button id="tester" hidden="true">Test</button>
       <div id="signup">
@@ -35,7 +35,7 @@
           <button type="button">start game</button>
         </form>
       </div>
-      <div id="tutorial" hidden="true">
+      <div id="tutorial" class="hidden">
         <ul>
           <strong>Game rules</strong>
           <li>
@@ -76,15 +76,22 @@
             progress in the current puzzle
           </li>
           <li>
+            If you wish to save your progress, click on <b><i>save game</i></b>
+            button at the lower left corner of the page. If you click on
+            <b><i>get saved games</i></b
+            >, you will be able to load all the previously saved games.
+          </li>
+
+          <li>
             Your score for each map is the time you take to solve it properly.
             (Check the <b><i>game rules</i></b> section above for more details)
           </li>
         </ul>
       </div>
-      <div id="leaderboard" hidden="true">
+      <div id="leaderboard" class="hidden">
         <!-- <table></table> -->
       </div>
-      <div id="load-games" hidden="true"></div>
+      <div id="load-games" class="hidden"></div>
     </div>
 
     <div id="game-display">
@@ -95,13 +102,13 @@
       <div id="board" hidden>
         <!-- <table></table> -->
       </div>
-      <div id="game-end" hidden>
+      <div class="hidden" id="game-end">
         <span>Game won!</span>
         <button>Restart game</button>
       </div>
       <div id="game-controls">
         <button id="save">Save game</button>
-        <button id="fetch">Fetch game</button>
+        <button id="fetch">Get saved games</button>
       </div>
     </div>
 

@@ -75,7 +75,8 @@ function startGame(mapName, playerName, board, time) {
   resetCounter(timeElSelector, time);
   startCounter(timeElSelector);
   renderBoard(game.board, boardDiv);
-  gameEndDiv.style.display = "none";
+  gameEndDiv.classList.add("hidden");
+  gameEndDiv.classList.remove("flex");
 }
 
 restartGameButton.addEventListener("click", function (event) {
@@ -83,21 +84,19 @@ restartGameButton.addEventListener("click", function (event) {
   renderBoard(game.board, boardDiv);
   resetCounter(timeElSelector);
   startCounter(timeElSelector);
-  gameEndDiv.style.display = "none";
+  gameEndDiv.classList.add("hidden");
+  gameEndDiv.classList.remove("flex");
 });
 
-//TODO save game
 function handleGameControl(event) {
   const targetElement = event.target;
   if (targetElement.id === "save") {
     savingGame();
   } else if (targetElement.id === "fetch") {
-    loadGameEl.style.display = "flex";
     showSavedGames();
-    // loadGameEl.innerHTML = string;
-    // console.log(string);
   }
 }
+
 function handleLoadGameOnBoard(event) {
   const targetElement = event.target;
   const parentSection = targetElement.closest("ul");
@@ -132,37 +131,17 @@ function handleLoadGameOnBoard(event) {
     tempBoard.push(rowToInsert);
   });
   boardToLoad = tempBoard;
-  console.log(boardToLoad);
+  // console.log(boardToLoad);
   // game = new Game(mapName);
   // game.board = boardToLoad.boardInStore;
   // console.log(boardToLoad.boardInStore);
   startGame(mapName, playerName, boardToLoad, time);
-  loadGameEl.style.display = "none";
+  loadGameEl.classList.add("hidden");
+  loadGameEl.classList.remove("flex");
+  // loadGameEl.style.display = "none";
   // console.log(game.board);
 }
 
-function showSavedGames() {
-  savedGames = JSON.parse(localStorage.getItem("saved-games"));
-  // console.log(savedGames);
-  let string;
-  string = savedGames
-    .map((entry) => {
-      return `<ul>
-        <span>${entry.name}</span>
-        ${entry.boards
-          .map((item) => {
-            // console.log(item.map);
-            return `<button><li>${item.map}</li><li hidden="true">${item.boardInStore}</li></button>`;
-          })
-          .join("")}
-      </ul>`;
-    })
-    .join("");
-  // console.log(string);
-
-  loadGameEl.innerHTML = string;
-  delegate(loadGameEl, "click", "button li", handleLoadGameOnBoard);
-}
 delegate(gameControlDiv, "click", "button", handleGameControl);
 // console.log(game.altBoard);
 
@@ -170,20 +149,23 @@ function savingGame() {
   let currentPlayerName = localStorage.getItem("current-player");
   let mapName = selectMapEl.value;
   let currentTime = document.querySelector(timeElSelector).innerHTML;
+  if (!currentTime || !mapName || !currentPlayerName) {
+    alert("No game to save");
+    return;
+  }
   currentTime = currentTime.split(":")[1];
   currentTime = currentTime.split("sec")[0].trim();
   console.log(currentTime);
+  let boardToAdd = {
+    map: mapName,
+    boardInStore: game.board,
+    time: currentTime,
+  };
   let dataToStore = {
     name: currentPlayerName,
-    boards: [
-      {
-        map: mapName,
-        boardInStore: game.board,
-        time: currentTime,
-      },
-    ],
+    boards: [boardToAdd],
   };
-  let savedGames = localStorage.getItem("saved-games");
+  savedGames = localStorage.getItem("saved-games");
   console.log(`${currentPlayerName} ${mapName}`);
   if (savedGames) {
     savedGames = JSON.parse(savedGames);
@@ -194,23 +176,19 @@ function savingGame() {
     // console.log(playerExists);
     if (playerExists) {
       savedGames.map((item) => {
-        console.log(item.boards);
+        // console.log(item.boards);
         let boardExists = item.boards.find(
           (boardInStore) => boardInStore.map === mapName
         );
-        console.log(boardExists);
+        // console.log(boardExists);
         if (boardExists) {
-          item.boards.map((entry) => {
+          item.boards = item.boards.map((entry) => {
             if (entry.map === mapName) {
-              entry.boardInStore = game.board;
+              entry = boardToAdd;
             }
+            return entry;
           });
         } else {
-          let boardToAdd = {
-            map: mapName,
-            boardInStore: game.board,
-            time: currentTime,
-          };
           item.boards.push(boardToAdd);
         }
       });
@@ -221,6 +199,34 @@ function savingGame() {
   } else {
     dataToStore = JSON.stringify([dataToStore]);
     localStorage.setItem("saved-games", dataToStore);
+  }
+}
+function showSavedGames() {
+  loadGameEl.classList.add("flex");
+  loadGameEl.classList.remove("hidden");
+  savedGames = JSON.parse(localStorage.getItem("saved-games"));
+  // console.log(savedGames);
+  let string = "No games saved!";
+  if (savedGames) {
+    string = savedGames
+      .map((entry) => {
+        return `<ul>
+        <span>${entry.name}</span>
+        ${entry.boards
+          .map((item) => {
+            // console.log(item.map);
+            return `<button><li>${item.map}</li></button>`;
+          })
+          .join("")}
+      </ul>`;
+      })
+      .join("");
+    // console.log(string);
+
+    loadGameEl.innerHTML = string;
+    delegate(loadGameEl, "click", "button li", handleLoadGameOnBoard);
+  } else {
+    alert(string);
   }
 }
 
@@ -280,7 +286,9 @@ const playerWon = () => {
 
 const displayWin = () => {
   console.log("Won!");
-  gameEndDiv.style.display = "flex";
+  gameEndDiv.classList.remove("hidden");
+  gameEndDiv.classList.add("flex");
+  // gameEndDiv.style.display = "flex";
 };
 
 const saveScore = () => {

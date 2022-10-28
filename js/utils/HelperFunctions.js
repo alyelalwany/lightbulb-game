@@ -56,7 +56,7 @@ export function startCounter(selector) {
 }
 
 export function resetCounter(selector, number = 0) {
-  console.log(number);
+  console.log(`time: ${number}`);
   counter = number;
   let element = window.document.querySelector(selector);
   element.innerHTML = `Time elapsed : ${counter} sec`;
