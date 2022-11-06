@@ -15,6 +15,8 @@
         <button id="tutorial">Game rules + usage tips</button>
         <button id="leaderboard">Leaderboard</button>
         <button id="load-games">Saved games</button>
+        <button id="custom-map">Create custom map</button>
+        <button id="saved-maps">Custom maps</button>
       </section>
       <button id="tester" hidden="true">Test</button>
       <div id="signup">
@@ -36,6 +38,7 @@
         </form>
       </div>
       <div id="tutorial" class="hidden">
+        <h2>Game rules</h2>
         <ul>
           <strong>Game rules</strong>
           <li>
@@ -86,12 +89,70 @@
             Your score for each map is the time you take to solve it properly.
             (Check the <b><i>game rules</i></b> section above for more details)
           </li>
+          <li>
+            The <b><i>leaderboard</i></b> tab has the list of the scores for the
+            previously finished puzzles
+          </li>
+          <li>
+            You can create your own maps under the <b><i>Custom map</i></b> tab
+          </li>
+          <li>
+            Choose the dimensions carefully, since it affects the difficulty of
+            the game, then click on generate to see the <i>board</i>.
+          </li>
+          <li>
+            Left-clicking a tile makes it black, white right-clicking it makes
+            it white again.
+          </li>
+          <li>
+            <b><i>Extra tip</i></b
+            >: If you are in a hurry, hold click and drag your pointer to change
+            more tiles faster.
+          </li>
+          <li>
+            After you are done, click save to save your newly-created custom
+            map.
+          </li>
         </ul>
       </div>
       <div id="leaderboard" class="hidden">
         <!-- <table></table> -->
       </div>
       <div id="load-games" class="hidden"></div>
+      <div id="custom-map" class="hidden">
+        <section>
+          <form>
+            <label for="width">Width:</label>
+            <input
+              name="width"
+              type="number"
+              id="width"
+              min="1"
+              max="15"
+              value="10"
+            />
+            <label for="height">Height:</label>
+            <input
+              name="height"
+              type="number"
+              id="height"
+              min="1"
+              max="15"
+              value="5"
+            />
+            <button id="generate">Generate</button>
+          </form>
+        </section>
+        <table class="edit">
+          <tr>
+            <td style="background-color: #222222"></td>
+            <td style="background-color: #ffffff"></td>
+          </tr>
+        </table>
+        <button class="hidden" id="save-custom-map">Save</button>
+        <button class="hidden" id="start-custom-map">Start game</button>
+      </div>
+      <div id="saved-maps"></div>
     </div>
 
     <div id="game-display">

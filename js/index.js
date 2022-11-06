@@ -1,6 +1,7 @@
 import { Game, GAME_STATE } from "./components/Game.js";
 import { delegate } from "./utils/EventFunctions.js";
 import "./view/MapSelectorPage.js";
+import "./view/CustomMaps.js";
 import {
   removeLight,
   xyCoord,
@@ -14,10 +15,9 @@ import {
   startCounter,
   resetCounter,
   checkIfBulbsInCorrectPosition,
-  isNumberedTilesHaveCorrectNumberOfBulbs,
   stopCounter,
 } from "./utils/HelperFunctions.js";
-import { renderLeaderboard, updateData } from "./view/Leaderboard.js";
+import { renderLeaderboard, loadLeaderboard } from "./view/Leaderboard.js";
 import { Tile } from "./components/Tile.js";
 
 //Elements
@@ -31,7 +31,6 @@ const nameInputEl = document.querySelector("input[name=name]");
 const selectMapEl = document.querySelector("select");
 const gameDisplay = document.querySelector("#game-display");
 const startGameButton = document.querySelector("select+button");
-const testerButton = document.querySelector("button#tester");
 const leaderboard = document.querySelector("div#leaderboard");
 const loadGameEl = document.querySelector("div#load-games");
 
@@ -39,10 +38,9 @@ let mapName = "map1";
 let playerName;
 let game;
 let timeElSelector = "span#time";
-let playersData = updateData();
+let playersData = loadLeaderboard();
 let savedGames;
-// game = new Game(mapName);
-// renderBoard(game.board, boardDiv);
+
 renderLeaderboard(playersData, leaderboard);
 startGameButton.addEventListener("click", function (event) {
   console.log(nameInputEl);
@@ -65,11 +63,9 @@ function startGame(mapName, playerName, board, time) {
   ).innerHTML = `<b>Game details</b><br>Player : ${playerName} <br> Map : ${mapName}`;
   gameDisplay.hidden = false;
   game = new Game(mapName);
-  // console.log(board);
   if (board) {
     game.board = board;
     document.querySelector(timeElSelector).innerHTML = time ? time : 0;
-    // console.log(game.board);
   }
   stopCounter();
   resetCounter(timeElSelector, time);
@@ -110,7 +106,6 @@ function handleLoadGameOnBoard(event) {
 
   let time = Number(boardToLoad.time);
   boardToLoad = boardToLoad.boardInStore;
-  // console.log(boardToLoad);
   let tempBoard = [];
   boardToLoad.map((row, i) => {
     let rowToInsert = [];
@@ -131,15 +126,9 @@ function handleLoadGameOnBoard(event) {
     tempBoard.push(rowToInsert);
   });
   boardToLoad = tempBoard;
-  // console.log(boardToLoad);
-  // game = new Game(mapName);
-  // game.board = boardToLoad.boardInStore;
-  // console.log(boardToLoad.boardInStore);
   startGame(mapName, playerName, boardToLoad, time);
   loadGameEl.classList.add("hidden");
   loadGameEl.classList.remove("flex");
-  // loadGameEl.style.display = "none";
-  // console.log(game.board);
 }
 
 delegate(gameControlDiv, "click", "button", handleGameControl);
@@ -173,14 +162,11 @@ function savingGame() {
       console.log(entry.name);
       return entry.name === currentPlayerName;
     });
-    // console.log(playerExists);
     if (playerExists) {
       savedGames.map((item) => {
-        // console.log(item.boards);
         let boardExists = item.boards.find(
           (boardInStore) => boardInStore.map === mapName
         );
-        // console.log(boardExists);
         if (boardExists) {
           item.boards = item.boards.map((entry) => {
             if (entry.map === mapName) {
@@ -201,11 +187,10 @@ function savingGame() {
     localStorage.setItem("saved-games", dataToStore);
   }
 }
-function showSavedGames() {
+export function showSavedGames() {
   loadGameEl.classList.add("flex");
   loadGameEl.classList.remove("hidden");
   savedGames = JSON.parse(localStorage.getItem("saved-games"));
-  // console.log(savedGames);
   let string = "No games saved!";
   if (savedGames) {
     string = savedGames
@@ -214,14 +199,12 @@ function showSavedGames() {
         <span>${entry.name}</span>
         ${entry.boards
           .map((item) => {
-            // console.log(item.map);
             return `<button><li>${item.map}</li></button>`;
           })
           .join("")}
       </ul>`;
       })
       .join("");
-    // console.log(string);
 
     loadGameEl.innerHTML = string;
     delegate(loadGameEl, "click", "button li", handleLoadGameOnBoard);
@@ -233,9 +216,6 @@ function showSavedGames() {
 function handleTileClick(event) {
   const tile = event.target;
   let { x, y } = xyCoord(tile);
-  // console.log(`${x} , ${y}`);
-  // checkSolution(game.board, tile, boardDiv);
-
   if (tile.classList.contains("black")) {
     console.log(tile);
     return;
@@ -257,7 +237,6 @@ function handleTileClick(event) {
   isCorrectNumberOfBulbsAroundTile(game.board);
   spreadLight(game.board, tile, boardDiv);
   checkIfBulbsInCorrectPosition(game.board, boardDiv);
-  // checkSolution(game.board, tile, boardDiv);
   renderBoard(game.board, boardDiv);
   if (hasWon(game)) {
     playerWon();
@@ -265,21 +244,10 @@ function handleTileClick(event) {
 }
 delegate(boardDiv, "click", "td", handleTileClick);
 
-// loadMapButton.addEventListener("click", function (event) {
-//   game.initBoardFromFile();
-//   console.log(game.altBoard);
-//   renderBoard(game.board, boardDiv);
-// });
-
-// checkSolutionButton.addEventListener("click", function (event) {
-//   checkIfBulbsInCorrectPosition();
-//   renderBoard(game.board, boardDiv);
-// });
-
 const playerWon = () => {
   displayWin();
   saveScore();
-  playersData = updateData();
+  playersData = loadLeaderboard();
   renderLeaderboard(playersData, leaderboard);
   stopCounter();
 };
@@ -288,7 +256,6 @@ const displayWin = () => {
   console.log("Won!");
   gameEndDiv.classList.remove("hidden");
   gameEndDiv.classList.add("flex");
-  // gameEndDiv.style.display = "flex";
 };
 
 const saveScore = () => {
@@ -296,36 +263,50 @@ const saveScore = () => {
   let currentMap = selectMapEl.value;
   let currentTime = document.querySelector(timeElSelector).innerHTML;
   currentTime = currentTime.split(":")[1];
-
-  let userMaps = JSON.parse(localStorage.getItem(currentPlayer));
-  if (!userMaps) {
-    let mapsForUser = [{ [currentMap]: currentTime }];
-    localStorage.setItem(currentPlayer, JSON.stringify(mapsForUser));
+  currentTime = parseInt(currentTime);
+  let savedPlayers = JSON.parse(localStorage.getItem("leaderboard"));
+  if (!savedPlayers) {
+    savedPlayers = [
+      { name: currentPlayer, maps: [{ name: currentMap, time: currentTime }] },
+    ];
   } else {
-    console.log(userMaps);
-    let mapPlayerDidBefore = userMaps.find(
-      (mapObj) => Object.keys(mapObj)[0] === currentMap
-    ); // {map1 : 0} OR {map2:0} where map2 == name of map , 0 == time elapsed
-
-    if (!mapPlayerDidBefore) {
-      userMaps.push({ [currentMap]: currentTime });
+    let playerInStore = savedPlayers.find(
+      (entry) => entry.name === currentPlayer
+    );
+    if (!playerInStore) {
+      let newPlayer = {
+        name: currentPlayer,
+        maps: [{ name: currentMap, time: currentTime }],
+      };
+      savedPlayers.push(newPlayer);
     } else {
-      if (mapPlayerDidBefore[currentMap] >= currentTime) {
-        mapPlayerDidBefore[currentMap] = currentTime;
-        userMaps.map((mapObj) => {
-          if (Object.keys(mapObj)[0] === currentMap) {
-            mapObj = mapPlayerDidBefore;
-          }
-        });
+      let mapPlayerDidBefore = playerInStore.maps.find(
+        (entry) => entry.name === currentMap
+      );
+      console.log(mapPlayerDidBefore);
+      if (!mapPlayerDidBefore) {
+        playerInStore.maps.push({ name: currentMap, time: currentTime });
+      } else {
+        console.log(mapPlayerDidBefore);
+        console.log(currentTime);
+        if (mapPlayerDidBefore.time >= currentTime) {
+          playerInStore.maps = playerInStore.maps.map((entry) => {
+            if (entry.name === mapPlayerDidBefore.name) {
+              entry.time = currentTime;
+            }
+            return entry;
+          });
+        }
       }
+      savedPlayers = savedPlayers.map((entry) => {
+        if (entry.name === currentPlayer) {
+          entry = playerInStore;
+        }
+        return entry;
+      });
     }
-    userMaps = JSON.stringify(userMaps);
-    localStorage.setItem(currentPlayer, userMaps);
   }
-
-  console.log(`${currentPlayer} ${currentMap} ${currentTime}`);
+  console.log(savedPlayers);
+  console.log("leaderboard");
+  localStorage.setItem("leaderboard", JSON.stringify(savedPlayers));
 };
-
-testerButton.addEventListener("click", () => {
-  saveScore();
-});

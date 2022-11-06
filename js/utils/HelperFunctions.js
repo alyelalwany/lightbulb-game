@@ -136,98 +136,39 @@ export function checkBulbsVertical(tile, board) {
   }
 }
 
-//stored to check for later
-
-function checkSolution(board, currentTile, boardDiv) {
-  checkSolutionHorizontally(board, currentTile, boardDiv);
-  checkSolutionVertically(board, currentTile, boardDiv);
+export function genEditTable(grid) {
+  return grid
+    .map(
+      (row) => `
+    <tr>
+      ${row
+        .map(
+          (cell) => `
+        <td style="background-color: ${cell}"></td>
+      `
+        )
+        .join("")}
+    </tr>
+  `
+    )
+    .join("");
 }
 
-function checkSolutionHorizontally(board, currentTile, boardDiv) {
-  let { x, y } = xyCoord(currentTile);
-  let clickedTile = board[y][x];
-  // console.log(clickedTile);
-
-  let currentColumn = x + 1;
-  while (currentColumn < board.length) {
-    let tile = board[y][currentColumn];
-    if (tile.getIsBlack()) {
-      break;
-    }
-    if (tile.getHasBulb() && board[y][x].getHasBulb()) {
-      board[y][x].setBulbIsInWrongPosition(true);
-      board[y][currentColumn].setBulbIsInWrongPosition(true);
-      console.log(`Found a bulb : ${JSON.stringify(tile)}`);
-      game.gameState = GAME_STATE.IN_GAME;
-      // break;
-    } else if (!board[y][x].getHasBulb()) {
-      board[y][x].setBulbIsInWrongPosition(false);
-      board[y][currentColumn].setBulbIsInWrongPosition(false);
-      // console.log(`Found a bulb : ${JSON.stringify(tile)}`);
-    }
-    currentColumn++;
-  }
-
-  currentColumn = x - 1;
-  while (currentColumn >= 0) {
-    let tile = board[y][currentColumn];
-    if (tile.getIsBlack()) {
-      break;
-    }
-    if (tile.getHasBulb() && board[y][x].getHasBulb()) {
-      board[y][x].setBulbIsInWrongPosition(true);
-      board[y][currentColumn].setBulbIsInWrongPosition(true);
-      console.log(`Found a bulb : ${JSON.stringify(tile)}`);
-      game.gameState = GAME_STATE.IN_GAME;
-      // break;
-    } else if (!board[y][x].getHasBulb()) {
-      board[y][x].setBulbIsInWrongPosition(false);
-      board[y][currentColumn].setBulbIsInWrongPosition(false);
-    }
-    currentColumn--;
-  }
-}
-
-function checkSolutionVertically(board, currentTile, boardDiv) {
-  let { x, y } = xyCoord(currentTile);
-  let clickedTile = board[y][x];
-  // console.log(clickedTile);
-
-  let currentRow = y + 1;
-  while (currentRow < board.length) {
-    let tile = board[currentRow][x];
-    if (tile.getIsBlack()) {
-      break;
-    }
-    if (tile.getHasBulb() && board[y][x].getHasBulb()) {
-      board[y][x].setBulbIsInWrongPosition(true);
-      board[currentRow][x].setBulbIsInWrongPosition(true);
-      console.log(`Found a bulb : ${JSON.stringify(tile)}`);
-      game.gameState = GAME_STATE.IN_GAME;
-      // break;
-    } else if (!board[y][x].getHasBulb()) {
-      board[y][x].setBulbIsInWrongPosition(false);
-      board[currentRow][x].setBulbIsInWrongPosition(false);
-    }
-    currentRow++;
-  }
-
-  currentRow = y - 1;
-  while (currentRow >= 0) {
-    let tile = board[currentRow][x];
-    if (tile.getIsBlack()) {
-      break;
-    }
-    if (tile.getHasBulb() && board[y][x].getHasBulb()) {
-      board[y][x].setBulbIsInWrongPosition(true);
-      board[currentRow][x].setBulbIsInWrongPosition(true);
-      console.log(`Found a bulb : ${JSON.stringify(tile)}`);
-      game.gameState = GAME_STATE.IN_GAME;
-      // break;
-    } else if (!board[y][x].getHasBulb()) {
-      board[y][x].setBulbIsInWrongPosition(false);
-      board[currentRow][x].setBulbIsInWrongPosition(false);
-    }
-    currentRow--;
+export function generateSavedMaps(savedMapsDiv) {
+  savedMapsDiv.classList.add("flex");
+  savedMapsDiv.classList.remove("hidden");
+  let string = "No games saved!";
+  let customMaps = JSON.parse(localStorage.getItem("saved-maps"));
+  if (customMaps) {
+    string = `
+    <ul>
+    ${customMaps
+      .map((entry) => {
+        return `<button><li>Map${entry.id}</li></button>`;
+      })
+      .join("")}
+    </ul>
+    `;
+    savedMapsDiv.innerHTML = string;
   }
 }

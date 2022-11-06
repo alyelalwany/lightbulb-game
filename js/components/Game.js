@@ -11,7 +11,12 @@ export class Game {
   gameState = GAME_STATE.IN_GAME;
   constructor(mapName) {
     // this.initBoard(rows, columns);
-    this.initBoardFromFile(mapName);
+    if (mapName !== "") {
+      this.initBoardFromFile(mapName);
+    } else {
+      this.board = [];
+      this.gameState = GAME_STATE.IN_GAME;
+    }
   }
 
   initBoardFromFile(mapName) {
@@ -39,19 +44,6 @@ export class Game {
     });
     this.board = this.altBoard;
   }
-
-  // initBoard(rows, columns) {
-  //   this.board = Array(rows)
-  //     .fill(0)
-  //     .map((row, y) =>
-  //       Array(columns)
-  //         .fill(0)
-  //         .map((cell, x) => {
-  //           return new Tile(x, y, this.randomBoolean());
-  //           // return new Tile(x, y, false);
-  //         })
-  //     );
-  // }
 
   randomBoolean() {
     return (Math.random() * 10).toFixed() % 2 === 0;

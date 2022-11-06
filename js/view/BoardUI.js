@@ -61,10 +61,6 @@ export function renderBoard(board, boardDiv) {
       )
       .join("")}
     </table>`;
-  // if (hasWon(board)) {
-  // alert("You won!");
-  // restartGame();
-  // }
 }
 
 function checkIfValidSolution(board) {}

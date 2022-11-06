@@ -1,37 +1,22 @@
-const Leaderboard = document.querySelector("div#leaderboard");
-
-const keyFilter = (key) => {
-  return key !== "board" && key !== "current-player" && key != "saved-games";
-};
-
-export const updateData = () => {
-  const listOfPlayers = Object.keys(localStorage).filter((key) =>
-    keyFilter(key)
-  );
-  return listOfPlayers.map((name) => {
-    let mapDetails = JSON.parse(localStorage.getItem(name));
-    let returnData = {
-      name: name,
-      mapDetails: mapDetails,
-    };
-    // console.log(returnData);
-    return returnData;
-  });
-};
+export function loadLeaderboard() {
+  let list = JSON.parse(localStorage.getItem("leaderboard"));
+  return list;
+}
 
 export const renderLeaderboard = (list, div) => {
   div.innerHTML = `
-  <h2>Our veterans</h2>
+  <h2>Leaderboard</h2>
   <table>
    ${list
      .map((obj) => {
        return `
       <tr>
       <td>${obj.name} </td> 
-     ${obj.mapDetails
+     ${obj.maps
        .map(
          (mapObj) =>
-           `<td>${Object.keys(mapObj)[0]} :${Object.values(mapObj)[0]}</td>`
+           `
+           <td>${mapObj.name} : ${mapObj.time}sec</td>`
        )
        .join("")}
     </tr>

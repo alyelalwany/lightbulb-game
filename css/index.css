@@ -10,7 +10,6 @@ body {
 }
 h1 {
   font-weight: 700;
-  /* font-style: italic; */
 }
 section#selector-buttons button {
   margin: 10px 10px;
@@ -20,11 +19,14 @@ div#tutorial ul {
   border-radius: 15px;
   outline: 3px solid white;
   padding: 10px;
-  /* list-style-type: none; */
   list-style-position: inside;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+div#tutorial h2 {
+  color: #222222;
 }
 
 #board {
@@ -114,6 +116,10 @@ select {
   height: 30px;
 }
 
+button:disabled {
+  background-color: #808587;
+}
+
 input:invalid {
   border: red solid 2px;
 }
@@ -133,8 +139,6 @@ input {
   max-width: 15rem;
 }
 
-div#leaderboard {
-}
 div#leaderboard h2 {
   color: #222222;
 }
@@ -190,4 +194,23 @@ div#load-games button {
 
 .selected-tab {
   border: 2.5px solid #d9d9d9;
+}
+
+#custom-map input {
+  min-width: 25px;
+}
+button#save-custom-map {
+  margin: 20px;
+}
+
+#custom-map table.edit {
+  margin-top: 10px;
+}
+
+#saved-maps ul {
+  list-style-type: none;
+  margin: 10px;
+}
+#saved-maps li {
+  margin: 0px 10px 0px 10px;
 }
