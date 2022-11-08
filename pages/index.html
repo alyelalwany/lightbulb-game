@@ -76,7 +76,7 @@
           <li>
             You can always restart the level without saving your progress by
             clicking on 'start game' again. Careful, since this will clear your
-            progress in the current puzzle
+            progress in the current puzzle.
           </li>
           <li>
             If you wish to save your progress, click on <b><i>save game</i></b>
@@ -91,10 +91,10 @@
           </li>
           <li>
             The <b><i>leaderboard</i></b> tab has the list of the scores for the
-            previously finished puzzles
+            previously finished puzzles.
           </li>
           <li>
-            You can create your own maps under the <b><i>Custom map</i></b> tab
+            You can create your own maps under the <b><i>Custom map</i></b> tab.
           </li>
           <li>
             Choose the dimensions carefully, since it affects the difficulty of
@@ -145,14 +145,14 @@
         </section>
         <table class="edit">
           <tr>
-            <td style="background-color: #222222"></td>
-            <td style="background-color: #ffffff"></td>
+            <td style="background-color: #222222; color: #ffffff">Blocker</td>
+            <td style="background-color: #ffffff">Normal</td>
           </tr>
         </table>
         <button class="hidden" id="save-custom-map">Save</button>
         <button class="hidden" id="start-custom-map">Start game</button>
       </div>
-      <div id="saved-maps"></div>
+      <div id="saved-maps" class="hidden">No custom maps!</div>
     </div>
 
     <div id="game-display">
@@ -169,7 +169,7 @@
       </div>
       <div id="game-controls">
         <button id="save">Save game</button>
-        <button id="fetch">Get saved games</button>
+        <!-- <button id="fetch">Get saved games</button> -->
       </div>
     </div>
 

@@ -1,10 +1,12 @@
 import { map1, map2, map3 } from "../../assets/maps/Maps.js";
 import { Tile, TILE_STATUS } from "./Tile.js";
+import { allMapsDict } from "../view/CustomMaps.js";
 export const GAME_STATE = {
   IN_GAME: 0,
   WON: 1,
 };
-const maps = { map1, map2, map3 };
+let maps = { map1, map2, map3 };
+
 export class Game {
   board = [];
   altBoard = [];
@@ -22,7 +24,8 @@ export class Game {
   initBoardFromFile(mapName) {
     this.altBoard = [];
     // console.log(maps[mapName]);
-    maps[mapName].map((row, i) => {
+    console.log(allMapsDict);
+    allMapsDict[mapName].map((row, i) => {
       let rowToInsert = [];
       row.map((cell, j) => {
         // console.log(JSON.stringify(cell));

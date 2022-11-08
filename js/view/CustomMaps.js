@@ -1,5 +1,11 @@
+import { map1, map2, map3 } from "../../assets/maps/Maps.js";
 import { Tile } from "../components/Tile.js";
-import { genEditTable } from "../utils/HelperFunctions.js";
+import {
+  genEditTable,
+  generateOptions,
+  getCustomMaps,
+  mapsListToDict,
+} from "../utils/HelperFunctions.js";
 import { xyCoord } from "./BoardUI.js";
 
 const inputWidth = document.querySelector("#width");
@@ -12,11 +18,13 @@ const BLACK_TILE_COLOR = "#222222";
 const WHITE_TILE_COLOR = "#ffffff";
 const savedMapsDiv = document.querySelector("div#saved-maps");
 const startMapButton = document.querySelector("button#start-custom-map");
-
+const mapSelectEl = document.querySelector("div#signup form select");
+let maps = [];
 let grid = [];
 let savedCustomMaps = [];
 let lastMapId;
-console.log(buttonGenerate);
+let allMapsDict = {};
+
 buttonGenerate.addEventListener("click", (event) => {
   event.preventDefault();
   // read
@@ -90,7 +98,7 @@ tableEdit.addEventListener("mouseover", function (event) {
 
 window.addEventListener("DOMContentLoaded", function (event) {
   savedCustomMaps = JSON.parse(localStorage.getItem("saved-maps"));
-  console.log(savedCustomMaps);
+  reloadMapsFromStoreAndDefault();
 });
 
 saveMapButton.addEventListener("click", (event) => {
@@ -100,24 +108,37 @@ saveMapButton.addEventListener("click", (event) => {
     lastMapId = savedCustomMaps[savedCustomMaps.length - 1].id + 1;
     newMap = { id: lastMapId, map: mapToSave };
     savedCustomMaps.push(newMap);
-    localStorage.setItem("saved-maps", JSON.stringify(savedCustomMaps));
-    console.log(savedCustomMaps);
   } else {
     lastMapId = 1;
     newMap = { id: lastMapId, map: mapToSave };
-    localStorage.setItem("saved-maps", JSON.stringify([newMap]));
+    savedCustomMaps = [newMap];
   }
+  localStorage.setItem("saved-maps", JSON.stringify(savedCustomMaps));
+  reloadMapsFromStoreAndDefault();
 });
+
+function reloadMapsFromStoreAndDefault() {
+  maps = [map1, map2, map3];
+  maps = maps.concat(getCustomMaps());
+  generateOptions(mapSelectEl, maps);
+  mapsListToDict(maps, allMapsDict);
+  console.log(maps);
+  console.log(allMapsDict);
+}
 
 function customMapToBoard(grid) {
   let matrix = [];
 
   matrix = grid.map((row, rowIndex) =>
-    row.map(
-      (cell, columnIndex) =>
-        new Tile(columnIndex, rowIndex, cell === BLACK_TILE_COLOR)
-    )
+    row.map((cell, columnIndex) => {
+      let tile = new Tile(columnIndex, rowIndex, cell === BLACK_TILE_COLOR);
+      tile.setNumber(-1);
+      tile.surroundingBulbs = 0;
+      return tile;
+    })
   );
 
   return matrix;
 }
+
+export { allMapsDict };

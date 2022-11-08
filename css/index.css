@@ -212,5 +212,8 @@ button#save-custom-map {
   margin: 10px;
 }
 #saved-maps li {
-  margin: 0px 10px 0px 10px;
+  margin: 0 10px;
+}
+#saved-maps button {
+  margin: 0 5px;
 }

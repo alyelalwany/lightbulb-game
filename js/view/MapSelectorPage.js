@@ -45,7 +45,7 @@ function handleClick(event) {
       <span>If there are no games here, click on<b><i> Get saved games</i></b> at the bottom left</span>`;
     }
   }
-  console.log(containerToReveal);
+  // console.log(containerToReveal);
   containerToReveal.classList.remove("hidden");
 }
 

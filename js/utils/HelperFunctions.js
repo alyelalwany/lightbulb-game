@@ -172,3 +172,23 @@ export function generateSavedMaps(savedMapsDiv) {
     savedMapsDiv.innerHTML = string;
   }
 }
+export const getCustomMaps = () => {
+  let list = [];
+  let customMaps = JSON.parse(localStorage.getItem("saved-maps"));
+  if (customMaps) {
+    customMaps.map((entry) => (entry ? list.push(entry.map) : ""));
+  }
+  return list;
+};
+export function generateOptions(mapSelectEl, list) {
+  mapSelectEl.innerHTML = `
+    ${list.map((entry, index) => {
+      let mapName = `map${index + 1}`;
+      return `<option value="${mapName}">${mapName}</option>`;
+    })}
+    `;
+}
+
+export function mapsListToDict(list, dict) {
+  list.forEach((map, index) => (dict[`map${index + 1}`] = map));
+}

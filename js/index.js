@@ -16,6 +16,7 @@ import {
   resetCounter,
   checkIfBulbsInCorrectPosition,
   stopCounter,
+  generateSavedMaps,
 } from "./utils/HelperFunctions.js";
 import { renderLeaderboard, loadLeaderboard } from "./view/Leaderboard.js";
 import { Tile } from "./components/Tile.js";
@@ -33,6 +34,10 @@ const gameDisplay = document.querySelector("#game-display");
 const startGameButton = document.querySelector("select+button");
 const leaderboard = document.querySelector("div#leaderboard");
 const loadGameEl = document.querySelector("div#load-games");
+const mapselectorContainer = document.querySelector(
+  "div#mapselector-container"
+);
+const savedMaps = document.querySelector("div#saved-maps");
 
 let mapName = "map1";
 let playerName;
@@ -40,7 +45,6 @@ let game;
 let timeElSelector = "span#time";
 let playersData = loadLeaderboard();
 let savedGames;
-
 renderLeaderboard(playersData, leaderboard);
 startGameButton.addEventListener("click", function (event) {
   console.log(nameInputEl);
@@ -52,6 +56,7 @@ startGameButton.addEventListener("click", function (event) {
   } else {
     mapName = selectMapEl.value;
     playerName = nameInputEl.value;
+    console.log(mapName);
     startGame(mapName, playerName);
   }
 });
@@ -71,6 +76,8 @@ function startGame(mapName, playerName, board, time) {
   resetCounter(timeElSelector, time);
   startCounter(timeElSelector);
   renderBoard(game.board, boardDiv);
+  isCorrectNumberOfBulbsAroundTile(game.board);
+  checkIfBulbsInCorrectPosition(game.board, boardDiv);
   gameEndDiv.classList.add("hidden");
   gameEndDiv.classList.remove("flex");
 }
@@ -310,3 +317,44 @@ const saveScore = () => {
   console.log("leaderboard");
   localStorage.setItem("leaderboard", JSON.stringify(savedPlayers));
 };
+
+function handleClick(event) {
+  const targetElement = event.target;
+  const parentElement = targetElement.parentNode;
+
+  let buttons = parentElement.querySelectorAll("button");
+  buttons = Array.from(buttons);
+  buttons.map((button) => button.classList.remove("selected-tab"));
+  targetElement.classList.add("selected-tab");
+
+  const idSelector = targetElement.id;
+  const containerToReveal = mapselectorContainer.querySelector(
+    `div#${idSelector}`
+  );
+
+  let containersToHide = mapselectorContainer.querySelectorAll("div");
+  containersToHide = Array.from(containersToHide);
+  containersToHide.forEach((item) => {
+    item.classList.add("hidden");
+    item.style.display = "none";
+    item.classList.remove("flex");
+  });
+  containerToReveal.style.display = "block";
+
+  if (idSelector === "saved-maps") {
+    generateSavedMaps(savedMaps);
+  }
+  if (idSelector == "load-games") {
+    containerToReveal.classList.add("flex");
+    containerToReveal.style.display = "flex";
+    showSavedGames();
+    if (!containerToReveal.innerHTML) {
+      containerToReveal.innerHTML = `
+      <span>If there are no games here, click on<b><i> Get saved games</i></b> at the bottom left</span>`;
+    }
+  }
+  console.log(containerToReveal);
+  containerToReveal.classList.remove("hidden");
+}
+
+delegate(mapselectorContainer, "click", "div>section>button", handleClick);
