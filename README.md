@@ -35,6 +35,6 @@ Basic tasks (12 pts)
 
 Extra tasks (extra 5 pts)
 
-[ ] Map editor: custom maps can be created with any dimension and starting tiles (3 pts) \
-[ ] Map editor: the custom maps are stored persistently in localStorage (1 pt) \
+[x] Map editor: custom maps can be created with any dimension and starting tiles (3 pts) \
+[x] Map editor: the custom maps are stored persistently in localStorage (1 pt) \
 [ ] Map editor: the custom maps can be reopened for editing and saved again (1 pt) \
